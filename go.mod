@@ -3,7 +3,7 @@ module github.com/Edgaru089/implot-go-example
 go 1.17
 
 require (
-	github.com/Edgaru089/implot-go v0.0.0-20220219122944-ceeb64f4f327
+	github.com/Edgaru089/implot-go v0.0.0-20220219152456-86c52fc674a4
 	github.com/go-gl/gl v0.0.0-20211210172815-726fda9656d6
 	github.com/go-gl/glfw/v3.3/glfw v0.0.0-20211213063430-748e38ca8aec
 	github.com/go-gl/mathgl v1.0.0
