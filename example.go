@@ -43,6 +43,8 @@ var (
 	shadedFillRef   = float32(0)
 )
 
+var shadedAlpha float32 = 0.25
+
 func showShaded() {
 	rand.Seed(0)
 	var xs, s1, s2, s3 [101]float64
@@ -52,6 +54,7 @@ func showShaded() {
 		s2[i] = floatRange(275, 350)
 		s3[i] = floatRange(150, 225)
 	}
+	imgui.DragFloatV("Alpha", &shadedAlpha, 0.01, 0, 1, "%.2g", 0)
 	imgui.Checkbox("Lines", &shadedShowLines)
 	imgui.SameLine()
 	imgui.Checkbox("Fills", &shadedShowFills)
@@ -63,9 +66,16 @@ func showShaded() {
 
 	if implot.BeginPlotV("Stock Prices", plotSize, 0) {
 		if shadedShowFills {
+			implot.PushStyleVar(implot.StyleVar_FillAlpha, shadedAlpha)
 			implot.PlotShadedRefXY("Stock 1", xs, s1, float64(shadedFillRef))
 			implot.PlotShadedRefXY("Stock 2", xs, s2, float64(shadedFillRef))
 			implot.PlotShadedRefXY("Stock 3", xs, s3, float64(shadedFillRef))
+			implot.PopStyleVar()
+		}
+		if shadedShowLines {
+			implot.PlotLineXY("Stock 1", xs, s1)
+			implot.PlotLineXY("Stock 2", xs, s2)
+			implot.PlotLineXY("Stock 3", xs, s3)
 		}
 		implot.EndPlot()
 	}
@@ -84,11 +94,13 @@ func showShadedLines() {
 	}
 
 	if implot.BeginPlotV("Shaded Plots", plotSize, 0) {
+		implot.PushStyleVar(implot.StyleVar_FillAlpha, shadedAlpha)
 		implot.PlotShadedLinesXY("Uncertain Data", xs, ys1, ys2)
 		implot.PlotLineXY("Uncertain Data", xs, ys)
 		implot.PlotShadedLinesXY("Overlapping", xs, ys3, ys4)
 		implot.PlotLineXY("Overlapping", xs, ys3)
 		implot.PlotLineXY("Overlapping", xs, ys4)
+		implot.PopStyleVar()
 		implot.EndPlot()
 	}
 }
@@ -108,7 +120,10 @@ func showScatter() {
 
 	if implot.BeginPlotV("Scatter", plotSize, 0) {
 		implot.PlotScatterP("Data 1", s1[:])
+		implot.PushStyleVar(implot.StyleVar_FillAlpha, 0.25)
+		implot.SetNextMarkerStyle(implot.Marker_Square, 6, implot.AutoColor, implot.Auto, implot.AutoColor)
 		implot.PlotScatterP("Data 2", s2[:])
+		implot.PopStyleVar()
 		implot.EndPlot()
 	}
 }
@@ -121,7 +136,56 @@ func showStairs() {
 	}
 	if implot.BeginPlotV("Stairstep Plot", plotSize, 0) {
 		implot.PlotStairsV("Signal 1", s1, 0.01, 0)
+		implot.SetNextMarkerStyle(implot.Marker_Square, 2, implot.AutoColor, implot.Auto, implot.AutoColor)
 		implot.PlotStairsV("Signal 2", s2, 0.01, 0)
+		implot.EndPlot()
+	}
+}
+
+func showBars() {
+	data := []float64{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+	if implot.BeginPlotV("Bar Plot", plotSize, 0) {
+		implot.PlotBarsV("Bars", data, 0.7, 1)
+		implot.PlotBarsHV("BarsH", data, 0.4, 1)
+		implot.EndPlot()
+	}
+}
+
+var (
+	showBarGroupsStacked    = false
+	showBarGroupsHorizontal = false
+)
+
+func showBarGroups() {
+	data := [][]float64{
+		{83, 67, 23, 89, 83, 78, 91, 82, 85, 90},
+		{80, 62, 56, 99, 55, 78, 88, 78, 90, 100},
+		{80, 69, 52, 92, 72, 78, 75, 76, 89, 95},
+	}
+	ilabels := []string{"Midterm", "Final", "Course"}
+	glabels := []string{"S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10"}
+	positions := []float64{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
+
+	imgui.Checkbox("Stacked", &showBarGroupsStacked)
+	imgui.SameLine()
+	imgui.Checkbox("Horizontal", &showBarGroupsHorizontal)
+
+	var flags implot.BarGroupsFlags
+	if showBarGroupsStacked {
+		flags |= implot.BarGroupsFlags_Stacked
+	}
+
+	if implot.BeginPlotV("##BarGroups", plotSize, 0) {
+		implot.SetupLegend(implot.Location_East, implot.LegendFlags_Outside)
+		if showBarGroupsHorizontal {
+			implot.SetupAxes("Score", "Student", implot.AxisFlags_AutoFit, implot.AxisFlags_AutoFit)
+			implot.SetupAxisTickValues(implot.Axis_Y1, positions, glabels, false)
+			implot.PlotBarGroupsH(ilabels, data, 0.67, 0, flags)
+		} else {
+			implot.SetupAxes("Student", "Score", implot.AxisFlags_AutoFit, implot.AxisFlags_AutoFit)
+			implot.SetupAxisTickValues(implot.Axis_X1, positions, glabels, false)
+			implot.PlotBarGroups(ilabels, data, 0.67, 0, flags)
+		}
 		implot.EndPlot()
 	}
 }
@@ -230,6 +294,12 @@ func example() {
 				}
 				if imgui.CollapsingHeader("Stair Plots") {
 					showStairs()
+				}
+				if imgui.CollapsingHeader("Bar Plots") {
+					showBars()
+				}
+				if imgui.CollapsingHeader("Bar Groups") {
+					showBarGroups()
 				}
 				imgui.EndTabItem()
 			}

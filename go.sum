@@ -1,5 +1,7 @@
 github.com/Edgaru089/implot-go v0.0.0-20220218111546-ba3f2450e848 h1:d0DFmVUej1U0Hf8NTEA2DjEIvDwOAsg5lEM6ilkaNtM=
 github.com/Edgaru089/implot-go v0.0.0-20220218111546-ba3f2450e848/go.mod h1:L1Ext+yiyFw23G27BH8HaVJdR0CO0wGk+RzhJvf6Af4=
+github.com/Edgaru089/implot-go v0.0.0-20220219122944-ceeb64f4f327 h1:KVG3uMkZ5JX6COOj3amWGsRUR8WbU8hy0isPUcrFPjQ=
+github.com/Edgaru089/implot-go v0.0.0-20220219122944-ceeb64f4f327/go.mod h1:L1Ext+yiyFw23G27BH8HaVJdR0CO0wGk+RzhJvf6Af4=
 github.com/davecgh/go-spew v1.1.0 h1:ZDRjVQ15GmhC3fiQ8ni8+OwkZQO4DARzQgrnXU1Liz8=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/go-gl/gl v0.0.0-20211210172815-726fda9656d6 h1:zDw5v7qm4yH7N8C8uWd+8Ii9rROdgWxQuGoJ9WDXxfk=
