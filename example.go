@@ -6,8 +6,7 @@ import (
 	"math/rand"
 	"runtime"
 
-	"github.com/Edgaru089/implot-go"
-	"github.com/inkyblackness/imgui-go/v4"
+	"github.com/Edgaru089/imgui-go/v4"
 )
 
 var plotSize = imgui.Vec2{X: -1, Y: 200}
@@ -18,10 +17,10 @@ func floatRange(min, max float64) float64 {
 }
 
 func showLine() {
-	if implot.BeginPlotV("Lines", plotSize, 0) {
-		implot.PlotLine("Numbers", []float64{7, 2, 4, 9, 1, 2, 4, 0, 2, 5})
-		implot.PlotLineP("Coords",
-			[]implot.Point{
+	if imgui.BeginPlotV("Lines", plotSize, 0) {
+		imgui.PlotLine("Numbers", []float64{7, 2, 4, 9, 1, 2, 4, 0, 2, 5})
+		imgui.PlotLineP("Coords",
+			[]imgui.Point{
 				{X: 3, Y: -1},
 				{X: 4, Y: 3},
 				{X: 5, Y: 4},
@@ -30,10 +29,10 @@ func showLine() {
 				{X: 7, Y: 8},
 			},
 		)
-		implot.PlotLineG("Sine", func(userData interface{}, idx int) implot.Point {
-			return implot.Point{X: float64(idx) / 20, Y: math.Sin(float64(idx)/5)*4 + 4}
+		imgui.PlotLineG("Sine", func(userData interface{}, idx int) imgui.Point {
+			return imgui.Point{X: float64(idx) / 20, Y: math.Sin(float64(idx)/5)*4 + 4}
 		}, nil, 200)
-		implot.EndPlot()
+		imgui.EndPlot()
 	}
 }
 
@@ -64,20 +63,20 @@ func showShaded() {
 		imgui.DragFloatV("##Ref", &shadedFillRef, 1, -100, 500, "%.2f", 0)
 	}
 
-	if implot.BeginPlotV("Stock Prices", plotSize, 0) {
+	if imgui.BeginPlotV("Stock Prices", plotSize, 0) {
 		if shadedShowFills {
-			implot.PushStyleVar(implot.StyleVar_FillAlpha, shadedAlpha)
-			implot.PlotShadedRefXY("Stock 1", xs, s1, float64(shadedFillRef))
-			implot.PlotShadedRefXY("Stock 2", xs, s2, float64(shadedFillRef))
-			implot.PlotShadedRefXY("Stock 3", xs, s3, float64(shadedFillRef))
-			implot.PopStyleVar()
+			imgui.PushPlotStyleVar(imgui.PlotStyleVar_FillAlpha, shadedAlpha)
+			imgui.PlotShadedRefXY("Stock 1", xs, s1, float64(shadedFillRef))
+			imgui.PlotShadedRefXY("Stock 2", xs, s2, float64(shadedFillRef))
+			imgui.PlotShadedRefXY("Stock 3", xs, s3, float64(shadedFillRef))
+			imgui.PopPlotStyleVar()
 		}
 		if shadedShowLines {
-			implot.PlotLineXY("Stock 1", xs, s1)
-			implot.PlotLineXY("Stock 2", xs, s2)
-			implot.PlotLineXY("Stock 3", xs, s3)
+			imgui.PlotLineXY("Stock 1", xs, s1)
+			imgui.PlotLineXY("Stock 2", xs, s2)
+			imgui.PlotLineXY("Stock 3", xs, s3)
 		}
-		implot.EndPlot()
+		imgui.EndPlot()
 	}
 }
 
@@ -93,22 +92,22 @@ func showShadedLines() {
 		ys4[i] = 0.75 + 0.1*math.Cos(25*xs[i])
 	}
 
-	if implot.BeginPlotV("Shaded Plots", plotSize, 0) {
-		implot.PushStyleVar(implot.StyleVar_FillAlpha, shadedAlpha)
-		implot.PlotShadedLinesXY("Uncertain Data", xs, ys1, ys2)
-		implot.PlotLineXY("Uncertain Data", xs, ys)
-		implot.PlotShadedLinesXY("Overlapping", xs, ys3, ys4)
-		implot.PlotLineXY("Overlapping", xs, ys3)
-		implot.PlotLineXY("Overlapping", xs, ys4)
-		implot.PopStyleVar()
-		implot.EndPlot()
+	if imgui.BeginPlotV("Shaded Plots", plotSize, 0) {
+		imgui.PushPlotStyleVar(imgui.PlotStyleVar_FillAlpha, shadedAlpha)
+		imgui.PlotShadedLinesXY("Uncertain Data", xs, ys1, ys2)
+		imgui.PlotLineXY("Uncertain Data", xs, ys)
+		imgui.PlotShadedLinesXY("Overlapping", xs, ys3, ys4)
+		imgui.PlotLineXY("Overlapping", xs, ys3)
+		imgui.PlotLineXY("Overlapping", xs, ys4)
+		imgui.PopPlotStyleVar()
+		imgui.EndPlot()
 	}
 }
 
 func showScatter() {
 	rand.Seed(0)
-	var s1 [100]implot.Point
-	var s2 [50]implot.Point
+	var s1 [100]imgui.Point
+	var s2 [50]imgui.Point
 	for i := 0; i < 100; i++ {
 		s1[i].X = float64(i) * 0.01
 		s1[i].Y = s1[i].X + 0.1*rand.Float64()
@@ -118,13 +117,13 @@ func showScatter() {
 		s2[i].Y = 0.75 + 0.2*rand.Float64()
 	}
 
-	if implot.BeginPlotV("Scatter", plotSize, 0) {
-		implot.PlotScatterP("Data 1", s1[:])
-		implot.PushStyleVar(implot.StyleVar_FillAlpha, 0.25)
-		implot.SetNextMarkerStyle(implot.Marker_Square, 6, implot.AutoColor, implot.Auto, implot.AutoColor)
-		implot.PlotScatterP("Data 2", s2[:])
-		implot.PopStyleVar()
-		implot.EndPlot()
+	if imgui.BeginPlotV("Scatter", plotSize, 0) {
+		imgui.PlotScatterP("Data 1", s1[:])
+		imgui.PushPlotStyleVar(imgui.PlotStyleVar_FillAlpha, 0.25)
+		imgui.SetNextMarkerStyle(imgui.Marker_Square, 6, imgui.AutoColor, imgui.Auto, imgui.AutoColor)
+		imgui.PlotScatterP("Data 2", s2[:])
+		imgui.PopPlotStyleVar()
+		imgui.EndPlot()
 	}
 }
 
@@ -134,20 +133,20 @@ func showStairs() {
 		s1[i] = 0.5 + 0.4*math.Sin(50*float64(i)*0.01)
 		s2[i] = 0.5 + 0.2*math.Sin(25*float64(i)*0.01)
 	}
-	if implot.BeginPlotV("Stairstep Plot", plotSize, 0) {
-		implot.PlotStairsV("Signal 1", s1, 0.01, 0)
-		implot.SetNextMarkerStyle(implot.Marker_Square, 2, implot.AutoColor, implot.Auto, implot.AutoColor)
-		implot.PlotStairsV("Signal 2", s2, 0.01, 0)
-		implot.EndPlot()
+	if imgui.BeginPlotV("Stairstep Plot", plotSize, 0) {
+		imgui.PlotStairsV("Signal 1", s1, 0.01, 0)
+		imgui.SetNextMarkerStyle(imgui.Marker_Square, 2, imgui.AutoColor, imgui.Auto, imgui.AutoColor)
+		imgui.PlotStairsV("Signal 2", s2, 0.01, 0)
+		imgui.EndPlot()
 	}
 }
 
 func showBars() {
 	data := []float64{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
-	if implot.BeginPlotV("Bar Plot", plotSize, 0) {
-		implot.PlotBarsV("Bars", data, 0.7, 1)
-		implot.PlotBarsHV("BarsH", data, 0.4, 1)
-		implot.EndPlot()
+	if imgui.BeginPlotV("Bar Plot", plotSize, 0) {
+		imgui.PlotBarsV("Bars", data, 0.7, 1)
+		imgui.PlotBarsHV("BarsH", data, 0.4, 1)
+		imgui.EndPlot()
 	}
 }
 
@@ -170,23 +169,23 @@ func showBarGroups() {
 	imgui.SameLine()
 	imgui.Checkbox("Horizontal", &showBarGroupsHorizontal)
 
-	var flags implot.BarGroupsFlags
+	var flags imgui.BarGroupsFlags
 	if showBarGroupsStacked {
-		flags |= implot.BarGroupsFlags_Stacked
+		flags |= imgui.BarGroupsFlags_Stacked
 	}
 
-	if implot.BeginPlotV("##BarGroups", plotSize, 0) {
-		implot.SetupLegend(implot.Location_East, implot.LegendFlags_Outside)
+	if imgui.BeginPlotV("##BarGroups", plotSize, 0) {
+		imgui.SetupLegend(imgui.Location_East, imgui.LegendFlags_Outside)
 		if showBarGroupsHorizontal {
-			implot.SetupAxes("Score", "Student", implot.AxisFlags_AutoFit, implot.AxisFlags_AutoFit)
-			implot.SetupAxisTickValues(implot.Axis_Y1, positions, glabels, false)
-			implot.PlotBarGroupsH(ilabels, data, 0.67, 0, flags)
+			imgui.SetupAxes("Score", "Student", imgui.AxisFlags_AutoFit, imgui.AxisFlags_AutoFit)
+			imgui.SetupAxisTickValues(imgui.Axis_Y1, positions, glabels, false)
+			imgui.PlotBarGroupsH(ilabels, data, 0.67, 0, flags)
 		} else {
-			implot.SetupAxes("Student", "Score", implot.AxisFlags_AutoFit, implot.AxisFlags_AutoFit)
-			implot.SetupAxisTickValues(implot.Axis_X1, positions, glabels, false)
-			implot.PlotBarGroups(ilabels, data, 0.67, 0, flags)
+			imgui.SetupAxes("Student", "Score", imgui.AxisFlags_AutoFit, imgui.AxisFlags_AutoFit)
+			imgui.SetupAxisTickValues(imgui.Axis_X1, positions, glabels, false)
+			imgui.PlotBarGroups(ilabels, data, 0.67, 0, flags)
 		}
-		implot.EndPlot()
+		imgui.EndPlot()
 	}
 }
 
@@ -206,19 +205,19 @@ func showLogAxes() {
 	}
 	imgui.Bullet()
 	imgui.Text("Open the plot context menu (right click) to change scales.")
-	if implot.BeginPlotV("Log Plot", plotSize, 0) {
-		implot.SetupAxis(implot.Axis_X1, "", implot.AxisFlags_LogScale)
-		implot.SetupAxesLimits(0.1, 100, 0, 10, implot.Condition_Once)
-		implot.PlotLineXY("f(x) = x", xs, xs)
-		implot.PlotLineXY("f(x) = sin(x)+1", xs, ys1)
-		implot.PlotLineXY("f(x) = log(x)", xs, ys2)
-		implot.PlotLineXY("f(x) = 10^x", xs, ys3)
-		implot.EndPlot()
+	if imgui.BeginPlotV("Log Plot", plotSize, 0) {
+		imgui.SetupAxis(imgui.Axis_X1, "", imgui.AxisFlags_LogScale)
+		imgui.SetupAxesLimits(0.1, 100, 0, 10, imgui.Cond(imgui.ConditionOnce))
+		imgui.PlotLineXY("f(x) = x", xs, xs)
+		imgui.PlotLineXY("f(x) = sin(x)+1", xs, ys1)
+		imgui.PlotLineXY("f(x) = log(x)", xs, ys2)
+		imgui.PlotLineXY("f(x) = 10^x", xs, ys3)
+		imgui.EndPlot()
 	}
 }
 
 func showTickLabels() {
-	var metric implot.Formatter = func(val float64, userData interface{}) string {
+	var metric imgui.Formatter = func(val float64, userData interface{}) string {
 		unit := userData.(string)
 		v := []float64{1000000000, 1000000, 1000, 1, 0.001, 0.000001, 0.000000001}
 		p := []string{"G", "M", "k", "", "m", "u", "n"}
@@ -246,30 +245,30 @@ func showTickLabels() {
 	yticks2 := []float64{0.2, 0.4, 0.6}
 	ylabels2 := []string{"A", "B", "C", "D", "E", "F"}
 
-	if implot.BeginPlot("##Ticks") {
-		implot.SetupAxesLimits(2.5, 5.0, 0, 1000, implot.Condition_Once)
-		implot.SetupAxis(implot.Axis_Y2, "", implot.AxisFlags_AuxDefault)
-		implot.SetupAxis(implot.Axis_Y3, "", implot.AxisFlags_AuxDefault)
+	if imgui.BeginPlot("##Ticks") {
+		imgui.SetupAxesLimits(2.5, 5.0, 0, 1000, imgui.Cond(imgui.ConditionOnce))
+		imgui.SetupAxis(imgui.Axis_Y2, "", imgui.AxisFlags_AuxDefault)
+		imgui.SetupAxis(imgui.Axis_Y3, "", imgui.AxisFlags_AuxDefault)
 		if showTickLabelsCustomFmt {
-			implot.SetupAxisFormat(implot.Axis_X1, "%.3g ms")
-			implot.SetupAxisFormatCallback(implot.Axis_Y1, metric, "Hz")
-			implot.SetupAxisFormat(implot.Axis_Y2, "%.3g dB")
-			implot.SetupAxisFormatCallback(implot.Axis_Y3, metric, "m")
+			imgui.SetupAxisFormat(imgui.Axis_X1, "%.3g ms")
+			imgui.SetupAxisFormatCallback(imgui.Axis_Y1, metric, "Hz")
+			imgui.SetupAxisFormat(imgui.Axis_Y2, "%.3g dB")
+			imgui.SetupAxisFormatCallback(imgui.Axis_Y3, metric, "m")
 		}
 		if showTickLabelsCustomTicks {
 			if showTickLabelsCustomLabels {
-				implot.SetupAxisTickValues(implot.Axis_X1, []float64{3.14}, []string{"Pi"}, true)
-				implot.SetupAxisTickValues(implot.Axis_Y1, yticks, ylabels, false)
-				implot.SetupAxisTickValues(implot.Axis_Y2, yticks2, ylabels2, false)
-				implot.SetupAxisTickRange(implot.Axis_Y3, 0, 1, 6, ylabels2, false)
+				imgui.SetupAxisTickValues(imgui.Axis_X1, []float64{3.14}, []string{"Pi"}, true)
+				imgui.SetupAxisTickValues(imgui.Axis_Y1, yticks, ylabels, false)
+				imgui.SetupAxisTickValues(imgui.Axis_Y2, yticks2, ylabels2, false)
+				imgui.SetupAxisTickRange(imgui.Axis_Y3, 0, 1, 6, ylabels2, false)
 			} else {
-				implot.SetupAxisTickValues(implot.Axis_X1, []float64{3.14}, nil, true)
-				implot.SetupAxisTickValues(implot.Axis_Y1, yticks, nil, false)
-				implot.SetupAxisTickValues(implot.Axis_Y2, yticks2, nil, false)
-				implot.SetupAxisTickRange(implot.Axis_Y3, 0, 1, 6, nil, false)
+				imgui.SetupAxisTickValues(imgui.Axis_X1, []float64{3.14}, nil, true)
+				imgui.SetupAxisTickValues(imgui.Axis_Y1, yticks, nil, false)
+				imgui.SetupAxisTickValues(imgui.Axis_Y2, yticks2, nil, false)
+				imgui.SetupAxisTickRange(imgui.Axis_Y3, 0, 1, 6, nil, false)
 			}
 		}
-		implot.EndPlot()
+		imgui.EndPlot()
 	}
 }
 
@@ -277,7 +276,7 @@ func example() {
 	imgui.SetNextWindowSizeV(imgui.Vec2{X: 400, Y: 600}, imgui.ConditionAppearing)
 	if imgui.Begin("ImPlot-Go example") {
 
-		imgui.Text(fmt.Sprintf("ImPlot-Go says hello. (%s)\ncompiled by %s/%s [%s/%s]", implot.Version(), runtime.Compiler, runtime.Version(), runtime.GOOS, runtime.GOARCH))
+		imgui.Text(fmt.Sprintf("ImPlot-Go says hello. (%s)\ncompiled by %s/%s [%s/%s]", imgui.PlotVersion(), runtime.Compiler, runtime.Version(), runtime.GOOS, runtime.GOARCH))
 
 		if imgui.BeginTabBar("MainTab") {
 			if imgui.BeginTabItem("Plots") {

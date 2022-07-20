@@ -3,11 +3,11 @@ package backend
 import (
 	_ "embed"
 
+	"github.com/Edgaru089/imgui-go/v4"
 	"github.com/Edgaru089/implot-go-example/render"
 	"github.com/go-gl/gl/all-core/gl"
 	"github.com/go-gl/glfw/v3.3/glfw"
 	"github.com/go-gl/mathgl/mgl32"
-	"github.com/inkyblackness/imgui-go/v4"
 )
 
 //go:embed shader.vert

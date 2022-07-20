@@ -1,6 +1,6 @@
 package backend
 
-import "github.com/inkyblackness/imgui-go/v4"
+import "github.com/Edgaru089/imgui-go/v4"
 
 var glyphRanges imgui.AllocatedGlyphRanges
 

@@ -3,11 +3,10 @@ package main
 import (
 	"runtime"
 
-	"github.com/Edgaru089/implot-go"
+	"github.com/Edgaru089/imgui-go/v4"
 	"github.com/Edgaru089/implot-go-example/backend"
 	"github.com/go-gl/gl/all-core/gl"
 	"github.com/go-gl/glfw/v3.3/glfw"
-	"github.com/inkyblackness/imgui-go/v4"
 )
 
 const (
@@ -47,7 +46,6 @@ func main() {
 	glfw.SwapInterval(1)
 
 	imgui.CreateContext(nil)
-	implot.CreateContext()
 
 	backend.Init(win)
 	win.SetMouseButtonCallback(func(w *glfw.Window, button glfw.MouseButton, action glfw.Action, mods glfw.ModifierKey) {
@@ -72,7 +70,7 @@ func main() {
 		backend.NewFrame()
 
 		imgui.ShowDemoWindow(&showDemoWindow)
-		implot.ShowDemoWindow(&showImPlotDemo)
+		imgui.ShowPlotDemoWindow(&showImPlotDemo)
 
 		example()
 
